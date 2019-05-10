@@ -38,10 +38,6 @@ import com.google.common.collect.ImmutableMap;
 @Scope("session")
 public class ProjectSettingsAssociatedProjectsController {
 
-	public static final String ASSOCIATED_PROJECTS_PAGE = ProjectsController.PROJECTS_DIR + "associated_projects";
-	public static final String EDIT_ASSOCIATED_PROJECTS_PAGE =
-			ProjectsController.PROJECTS_DIR + "associated_projects_edit";
-
 	private final ProjectService projectService;
 	private final ProjectControllerUtils projectControllerUtils;
 	private final UserService userService;

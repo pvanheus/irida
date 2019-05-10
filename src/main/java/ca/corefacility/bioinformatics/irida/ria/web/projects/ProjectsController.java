@@ -1,44 +1,5 @@
 package ca.corefacility.bioinformatics.irida.ria.web.projects;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.security.Principal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.Page;
-import org.springframework.format.Formatter;
-import org.springframework.format.datetime.DateFormatter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
 import ca.corefacility.bioinformatics.irida.config.web.IridaRestApiWebConfig;
 import ca.corefacility.bioinformatics.irida.exceptions.EntityNotFoundException;
 import ca.corefacility.bioinformatics.irida.exceptions.IridaOAuthException;
@@ -70,10 +31,44 @@ import ca.corefacility.bioinformatics.irida.service.sample.SampleService;
 import ca.corefacility.bioinformatics.irida.service.user.UserService;
 import ca.corefacility.bioinformatics.irida.service.workflow.IridaWorkflowsService;
 import ca.corefacility.bioinformatics.irida.util.TreeNode;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /**
  * Controller for project related views
@@ -90,14 +85,11 @@ public class ProjectsController {
 	// Page Names
 	public static final String PROJECTS_DIR = "projects/";
 	public static final String LIST_PROJECTS_PAGE = PROJECTS_DIR + "projects";
-	public static final String PROJECT_MEMBERS_PAGE = PROJECTS_DIR + "project_members";
 	public static final String SPECIFIC_PROJECT_PAGE = PROJECTS_DIR + "project_details";
 	public static final String CREATE_NEW_PROJECT_PAGE = PROJECTS_DIR + "project_new";
 	public static final String SYNC_NEW_PROJECT_PAGE = PROJECTS_DIR + "project_sync";
 	public static final String PROJECT_METADATA_PAGE = PROJECTS_DIR + "project_metadata";
 	public static final String PROJECT_METADATA_EDIT_PAGE = PROJECTS_DIR + "project_metadata_edit";
-	public static final String PROJECT_SAMPLES_PAGE = PROJECTS_DIR + "project_samples";
-	public static final String PROJECT_ACTIVITY_PAGE = PROJECTS_DIR + "project_details";
 	private static final Logger logger = LoggerFactory.getLogger(ProjectsController.class);
 
 	// Services
@@ -119,8 +111,7 @@ public class ProjectsController {
 	/*
 	 * Converters
 	 */
-	Formatter<Date> dateFormatter;
-	FileSizeConverter fileSizeConverter;
+	private FileSizeConverter fileSizeConverter;
 
 	// CONSTANTS
 	private final List<Map<String, String>> EXPORT_TYPES = ImmutableList.of(
@@ -137,7 +128,6 @@ public class ProjectsController {
 		this.projectRemoteService = projectRemoteService;
 		this.projectControllerUtils = projectControllerUtils;
 		this.taxonomyService = taxonomyService;
-		this.dateFormatter = new DateFormatter();
 		this.messageSource = messageSource;
 		this.remoteApiService = remoteApiService;
 		this.workflowsService = workflowsService;

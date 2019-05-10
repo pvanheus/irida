@@ -37,25 +37,21 @@ import com.google.common.collect.ImmutableMap;
 
 /**
  * Controller for handling {@link ProjectEvent} views
- * 
- *
  */
 @Controller
 @RequestMapping("/events")
 public class ProjectEventsController {
 	public static final String EVENTS_VIEW = "events/events";
-	public static final String ADMIN_EVENTS_VIEW = "events/admin";
 
-	public static final Map<Class<? extends ProjectEvent>, String> FRAGMENT_NAMES = 
-								new ImmutableMap.Builder<Class<? extends ProjectEvent>, String>()
-									.put(UserRoleSetProjectEvent.class, "user-role-event")
-									.put(UserRemovedProjectEvent.class, "user-removed-event")
-									.put(SampleAddedProjectEvent.class, "sample-added-event")
-									.put(SampleRemovedProjectEvent.class, "sample-removed-event")
-									.put(DataAddedToSampleProjectEvent.class, "data-added-event")
-									.put(UserGroupRoleSetProjectEvent.class, "user-group-role-event")
-									.put(UserGroupRemovedProjectEvent.class, "user-group-removed-event")
-								.build();
+	public static final Map<Class<? extends ProjectEvent>, String> FRAGMENT_NAMES = new ImmutableMap.Builder<Class<? extends ProjectEvent>, String>().put(
+			UserRoleSetProjectEvent.class, "user-role-event")
+			.put(UserRemovedProjectEvent.class, "user-removed-event")
+			.put(SampleAddedProjectEvent.class, "sample-added-event")
+			.put(SampleRemovedProjectEvent.class, "sample-removed-event")
+			.put(DataAddedToSampleProjectEvent.class, "data-added-event")
+			.put(UserGroupRoleSetProjectEvent.class, "user-group-role-event")
+			.put(UserGroupRemovedProjectEvent.class, "user-group-removed-event")
+			.build();
 	private static final String DEFAULT_PAGE_SIZE = "10";
 
 	private final ProjectEventService eventService;
@@ -74,16 +70,12 @@ public class ProjectEventsController {
 
 	/**
 	 * Get recent {@link ProjectEvent}s for the given {@link Project}
-	 * 
-	 * @param projectId
-	 *            The ID of the {@link Project} to get events for
-	 * @param model
-	 *            Model for the view. Contains a list named "events". This will
-	 *            be a map which will contain "name" which is the name of the
-	 *            view fragment to use, and "event" which is a reference to the
-	 *            event itself
-	 * @param size
-	 *            Number of events to show
+	 *
+	 * @param projectId The ID of the {@link Project} to get events for
+	 * @param model     Model for the view. Contains a list named "events". This will be a map which will contain "name"
+	 *                  which is the name of the view fragment to use, and "event" which is a reference to the event
+	 *                  itself
+	 * @param size      Number of events to show
 	 * @return The name of the events view
 	 */
 	@RequestMapping("/project/{projectId}")
@@ -102,16 +94,12 @@ public class ProjectEventsController {
 
 	/**
 	 * Get recent {@link ProjectEvent}s for the currently logged in user
-	 * 
-	 * @param model
-	 *            Model for the view. Contains a list named "events". This will
-	 *            be a map which will contain "name" which is the name of the
-	 *            view fragment to use, and "event" which is a reference to the
-	 *            event itself
-	 * @param principal
-	 *            currently logged in principal
-	 * @param size
-	 *            Number of events to show
+	 *
+	 * @param model     Model for the view. Contains a list named "events". This will be a map which will contain "name"
+	 *                  which is the name of the view fragment to use, and "event" which is a reference to the event
+	 *                  itself
+	 * @param principal currently logged in principal
+	 * @param size      Number of events to show
 	 * @return The name of the events view
 	 */
 	@RequestMapping("/current_user")
@@ -131,11 +119,9 @@ public class ProjectEventsController {
 
 	/**
 	 * Return a list of events for all projects
-	 * 
-	 * @param model
-	 *            Model attribute for returned view
-	 * @param size
-	 *            Number of events to show
+	 *
+	 * @param model Model attribute for returned view
+	 * @param size  Number of events to show
 	 * @return Name of the events view
 	 */
 	@RequestMapping("/all")
@@ -152,7 +138,7 @@ public class ProjectEventsController {
 
 	/**
 	 * Get the view name of the admin events page
-	 * 
+	 *
 	 * @return View name of the admin events page
 	 */
 	@RequestMapping("/admin")
@@ -162,15 +148,11 @@ public class ProjectEventsController {
 
 	/**
 	 * Update the subscription status on a {@link Project} for a {@link User}
-	 * 
-	 * @param userId
-	 *            The {@link User} id to update
-	 * @param projectId
-	 *            the {@link Project} to subscribe to
-	 * @param subscribe
-	 *            boolean whether to be subscribed to the project or not
-	 * @param locale
-	 *            locale of the request
+	 *
+	 * @param userId    The {@link User} id to update
+	 * @param projectId the {@link Project} to subscribe to
+	 * @param subscribe boolean whether to be subscribed to the project or not
+	 * @param locale    locale of the request
 	 * @return Map success message if the subscription status was updated
 	 */
 	@RequestMapping(value = "/projects/{projectId}/subscribe/{userId}", method = RequestMethod.POST)
@@ -195,11 +177,9 @@ public class ProjectEventsController {
 
 	/**
 	 * Convert the Page of events to the list expected in the model
-	 * 
-	 * @param events
-	 *            Page of {@link ProjectEvent}s
-	 * @return A List<Map<String,Object>> containing the events and fragment
-	 *         names
+	 *
+	 * @param events Page of {@link ProjectEvent}s
+	 * @return A List<Map<String,Object>> containing the events and fragment names
 	 */
 	private List<Map<String, Object>> buildEventsListFromPage(Page<ProjectEvent> events) {
 		List<Map<String, Object>> eventInfo = new ArrayList<>();
