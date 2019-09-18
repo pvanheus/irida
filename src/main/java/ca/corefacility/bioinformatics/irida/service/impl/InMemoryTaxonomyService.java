@@ -9,25 +9,19 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.jena.atlas.lib.StrUtils;
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.NodeIterator;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.jena.vocabulary.RDFS;
 
 import ca.corefacility.bioinformatics.irida.service.TaxonomyService;
 import ca.corefacility.bioinformatics.irida.util.TreeNode;
 
 import com.google.common.base.Strings;
-import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.query.DatasetFactory;
-import com.hp.hpl.jena.query.ParameterizedSparqlString;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.NodeIterator;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.vocabulary.RDFS;
+
 
 /**
  * A {@link TaxonomyService} leveraging Apache Jena's in memory storage service
@@ -48,7 +42,7 @@ public class InMemoryTaxonomyService implements TaxonomyService {
 	private final String ROOT_IRI = "http://purl.obolibrary.org/obo/NCBITaxon_2";
 
 	public InMemoryTaxonomyService(Path taxonomyFileLocation) {
-		dataset = DatasetFactory.createMem();
+		dataset = DatasetFactory.create();
 
 		model = dataset.getDefaultModel();
 		RDFDataMgr.read(model, taxonomyFileLocation.toString());

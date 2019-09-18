@@ -24,6 +24,7 @@ import ca.corefacility.bioinformatics.irida.service.impl.InMemoryTaxonomyService
 import ca.corefacility.bioinformatics.irida.service.impl.analysis.submission.AnalysisSubmissionCleanupServiceImpl;
 import ca.corefacility.bioinformatics.irida.service.user.UserService;
 import ca.corefacility.bioinformatics.irida.util.IridaPluginMessageSource;
+import ca.corefacility.bioinformatics.irida.service.impl.MetadataEntryOntologyServiceImpl;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.matlux.NreplServerSpring;
@@ -327,6 +328,10 @@ public class IridaApiServicesConfig {
 		return new InMemoryTaxonomyService(path);
 	}
 
+	@Bean
+	public MetadataEntryOntologyServiceImpl metadataEntryOntologyService() throws URISyntaxException {
+		return new MetadataEntryOntologyServiceImpl();
+	}
 	/**
 	 * Builds a new {@link Executor} for analysis tasks.
 	 * 
