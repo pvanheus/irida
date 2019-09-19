@@ -14,6 +14,7 @@ import { LoadingOverlay } from "./LoadingOverlay";
 import {
   DateCellRenderer,
   IconCellRenderer,
+  OntologyCellEditor,
   SampleNameRenderer
 } from "./renderers";
 import { FIELDS } from "../../constants";
@@ -51,7 +52,8 @@ export class TableComponent extends React.Component {
     LoadingOverlay,
     SampleNameRenderer,
     IconCellRenderer,
-    DateCellRenderer
+    DateCellRenderer,
+    OntologyCellEditor
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {

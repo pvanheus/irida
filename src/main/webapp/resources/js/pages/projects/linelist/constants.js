@@ -7,5 +7,6 @@ export const FIELDS = {
 };
 
 export const TYPES = {
-  date: "date"
+  date: "date",
+  onto: "ontology"
 };

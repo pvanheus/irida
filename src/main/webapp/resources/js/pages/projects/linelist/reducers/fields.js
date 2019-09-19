@@ -53,6 +53,11 @@ function getColumnDefinition(col) {
       cellRenderer: "SampleNameRenderer",
       filter: "agTextColumnFilter"
     });
+  } else if (type === TYPES.onto) {
+    console.log("ONTOLOGY");
+    Object.assign(col, {
+      cellEditor: "OntologyCellEditor"
+    });
   } else {
     // Default to text filter
     Object.assign(col, { filter: "agTextColumnFilter" });
