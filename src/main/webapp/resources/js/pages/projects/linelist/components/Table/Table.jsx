@@ -349,6 +349,7 @@ export class TableComponent extends React.Component {
    * @param {object} event - cell edit event
    */
   onCellEditingStopped = event => {
+    console.log(event)
     // Get the table header for the cell that was edited
 
     const { field, headerName } = event.column.colDef;

@@ -1,23 +1,17 @@
 package ca.corefacility.bioinformatics.irida.model.sample.metadata;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import ca.corefacility.bioinformatics.irida.model.sample.Sample;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Class for storing generic metadata for a {@link Sample}
@@ -25,7 +19,7 @@ import ca.corefacility.bioinformatics.irida.model.sample.Sample;
 @Entity
 @Audited
 @Table(name = "metadata_entry")
-@Inheritance(strategy = InheritanceType.JOINED)
+@EntityListeners(AuditingEntityListener.class)
 public class MetadataEntry {
 
 	@Id
