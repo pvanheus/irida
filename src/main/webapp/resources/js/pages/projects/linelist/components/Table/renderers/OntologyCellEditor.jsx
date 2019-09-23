@@ -1,117 +1,81 @@
 import React from "react";
 import axios from "axios";
-import { AutoComplete } from "antd";
+import { Select, Spin } from "antd";
+import { grey7 } from "../../../../../../styles/colors";
+import _ from "lodash";
+
+const { Option } = Select;
 
 export class OntologyCellEditor extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       value: props.value,
       dataSource: [],
-      searching: false
+      fetching: false
     };
+    this.lastFetchId = 0;
+    this.onSearch = _.debounce(this.onSearch, 500);
+    this.stopEditing = props.stopEditing;
+    this.selectRef = React.createRef();
   }
 
   getValue = () => this.state.value;
 
+  afterGuiAttached() {
+    // this.selectRef.current.focus();
+    this.selectRef.current.rcSelect.inputRef.click();
+  }
+
   onSearch = value => {
-    this.setState({ value, searching: true, dataSource: [] }, () => {
+    if (value) {
+      this.setState({ value: undefined, fetching: true, dataSource: [] });
+      this.lastFetchId += 1;
+      const fetchId = this.lastFetchId;
       axios.get(`/onto?type=symptom&query=${value}`).then(({ data }) => {
+        if (fetchId !== this.lastFetchId) {
+          return;
+        }
         this.setState({
-          dataSource: data.map(d => d.value),
-          searching: false
+          dataSource: data,
+          fetching: false
         });
       });
-    });
+    } else {
+      this.setState({ dataSource: [] });
+    }
   };
 
   render() {
     return (
-      <AutoComplete
-        autoFocus
+      <Select
+        ref={this.selectRef}
+        loading={this.state.fetching}
+        showSearch
+        showArrow={false}
+        style={{ width: "100%", margin: 0 }}
+        defaultActiveFirstOption={false}
+        notFoundContent={
+          this.state.fetching ? (
+            <div>
+              <Spin size="small" /> Fetching ...
+            </div>
+          ) : null
+        }
+        filterOption={false}
         value={this.state.value}
         onSearch={this.onSearch}
-        dataSource={this.state.dataSource}
-        onSelect={value => this.setState({ value })}
-      />
+        onChange={value => {
+          this.setState({ value }, this.stopEditing);
+        }}
+      >
+        {this.state.dataSource.map(item => (
+          <Option key={item.value}>
+            {item.value}
+            <br /> <small style={{ color: grey7 }}>{item.ontologyUri}</small>
+          </Option>
+        ))}
+      </Select>
     );
   }
 }
-
-// function useEventListener(eventName, handler, element = window) {
-//   const savedHandler = useRef();
-//
-//   useEffect(() => {
-//     savedHandler.current = handler;
-//   }, [handler]);
-//
-//   useEffect(() => {
-//     const isSupported = element && element.addEventListener;
-//     if (!isSupported) return;
-//
-//     const eventListener = event => savedHandler.current(event);
-//     return () => {
-//       element.removeEventListener(eventName, eventListener);
-//     };
-//   }, [eventName, element]);
-// }
-//
-// function useDebouce(value, delay) {
-//   const [debouncedValue, setDebouncedValue] = useState(value);
-//
-//   useEffect(
-//     () => {
-//       // Set debouncedValue to value (passed in) after the specified delay
-//       const handler = setTimeout(() => {
-//         setDebouncedValue(value);
-//       }, delay);
-//
-//       // Return a cleanup function that will be called every time ...
-//       // ... useEffect is re-called. useEffect will only be re-called ...
-//       // ... if value changes (see the inputs array below).
-//       // This is how we prevent debouncedValue from changing if value is ...
-//       // ... changed within the delay period. Timeout gets cleared and restarted.
-//       // To put it in context, if the user is typing within our app's ...
-//       // ... search box, we don't want the debouncedValue to update until ...
-//       // ... they've stopped typing for more than 500ms.
-//       return () => {
-//         clearTimeout(handler);
-//       };
-//     },
-//     // Only re-call effect if value changes
-//     // You could also add the "delay" var to inputs array if you ...
-//     // ... need to be able to change that dynamically.
-//     [value]
-//   );
-//
-//   return debouncedValue;
-// }
-//
-// export function OntologyCellEditor(params) {
-//
-//   const field = params.colDef.field;
-//   const [value, setValue] = useState(params.data[field] || "");
-//   const [isSearching, setIsSearching] = useState(false);
-//   const debouncedValue = useDebouce(value, 500);
-//
-//   const [dataSource, setDataSource] = useState([]);
-//
-//
-//
-//   useEffect(() => {
-//     if (debouncedValue) {
-//       setIsSearching(true);
-
-//     }
-//   }, [debouncedValue]);
-//
-//   return (
-//     <AutoComplete
-//       value={value}
-//       onSearch={text => setValue(text)}
-//       dataSource={dataSource}
-//       onSelect={text => setValue(text)}
-//     />
-//   );
-// }

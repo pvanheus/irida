@@ -349,7 +349,6 @@ export class TableComponent extends React.Component {
    * @param {object} event - cell edit event
    */
   onCellEditingStopped = event => {
-    console.log(event)
     // Get the table header for the cell that was edited
 
     const { field, headerName } = event.column.colDef;
@@ -411,6 +410,15 @@ export class TableComponent extends React.Component {
     this.api.ensureColumnVisible(this.columnApi.getColumnState()[1].colId);
   };
 
+  suppressEnterKeyOnDropDowns = params => {
+    if (params.editing) {
+      const { cellEditor } = params.colDef;
+      const { event } = params;
+      return cellEditor === "OntologyCellEditor" && event.which === 13;
+    }
+    return false;
+  };
+
   render() {
     return (
       <div
@@ -439,6 +447,7 @@ export class TableComponent extends React.Component {
           enableCellChangeFlash={true}
           onCellEditingStarted={this.onCellEditingStarted}
           onCellEditingStopped={this.onCellEditingStopped}
+          suppressKeyboardEvent={this.suppressEnterKeyOnDropDowns}
         />
       </div>
     );
