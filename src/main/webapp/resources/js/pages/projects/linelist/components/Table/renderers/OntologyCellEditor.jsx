@@ -4,7 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { Form, Select, Spin } from "antd";
 import { grey1, grey2, grey7 } from "../../../../../../styles/colors";
-import _ from "lodash";
+import debounce from "lodash/debounce";
 
 const { Option } = Select;
 const PADDING = 30;
@@ -36,7 +36,7 @@ export class OntologyCellEditor extends React.Component {
 
     this.rect = props.eGridCell.getBoundingClientRect();
     this.lastFetchId = 0;
-    this.onSearch = _.debounce(this.onSearch, 500);
+    this.onSearch = debounce(this.onSearch, 500);
     this.stopEditing = props.stopEditing;
     this.selectRef = React.createRef();
 
