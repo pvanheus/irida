@@ -58,6 +58,8 @@ export class OntologyCellEditor extends React.Component {
       this.setState({ value: undefined, fetching: true, dataSource: [] });
       this.lastFetchId += 1;
       const fetchId = this.lastFetchId;
+
+      // TODO: Move this into the API.
       axios.get(`/onto?type=symptom&query=${value}`).then(({ data }) => {
         if (fetchId !== this.lastFetchId) {
           return;
