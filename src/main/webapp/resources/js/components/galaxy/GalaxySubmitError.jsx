@@ -1,8 +1,8 @@
 import React from "react";
-import {useStateValue} from "./GalaxyState";
+import { useStateValue } from "./GalaxyState";
 import { Alert } from "antd";
 import { SPACE_SM } from "../../styles/spacing";
-import { getI18N } from "../../utilities/i18n-utilties";
+import { getI18N } from "../../utilities/i18n-utilities";
 
 export function GalaxySubmitError() {
   const [{ errored }] = useStateValue();

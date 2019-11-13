@@ -1,33 +1,25 @@
 package ca.corefacility.bioinformatics.irida.service.impl;
 
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import ca.corefacility.bioinformatics.irida.service.TaxonomyService;
+import ca.corefacility.bioinformatics.irida.util.TreeNode;
+import com.google.common.base.Strings;
 import org.apache.jena.atlas.lib.StrUtils;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.NodeIterator;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.jena.vocabulary.RDFS;
+import org.apache.lucene.queryparser.classic.QueryParser;
 
-import ca.corefacility.bioinformatics.irida.service.TaxonomyService;
-import ca.corefacility.bioinformatics.irida.util.TreeNode;
-
-import com.google.common.base.Strings;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 /**
  * A {@link TaxonomyService} leveraging Apache Jena's in memory storage service
  * and Apache Lucene's text searching abilities.
- * 
- *
  */
 public class InMemoryTaxonomyService implements TaxonomyService {
 	private Model model;
@@ -92,7 +84,7 @@ public class InMemoryTaxonomyService implements TaxonomyService {
 	/**
 	 * Build a result tree from a searched resource. This search will look
 	 * upwards in the tree until there are no more parent nodes.
-	 * 
+	 *
 	 * @param resource
 	 *            The resource to start from
 	 * @param searchTerm
@@ -126,7 +118,7 @@ public class InMemoryTaxonomyService implements TaxonomyService {
 
 	/**
 	 * Get a parent node with the matching search term
-	 * 
+	 *
 	 * @param resource
 	 *            The resource to start walking up from
 	 * @param searchTerm
