@@ -372,9 +372,9 @@ export class TableComponent extends React.Component {
         rowSelection="multiple"
         onFilterChanged={this.setFilterCount}
         localeText={{
-            loading: i18n("linelist.agGrid.loading"),
-            sampleName: i18n("linelist.agGrid.sampleName")
-          }}
+          loading: i18n("linelist.agGrid.loading"),
+          sampleName: i18n("linelist.agGrid.sampleName")
+        }}
         columnDefs={this.props.fields}
         rowData={this.props.entries}
         frameworkComponents={this.frameworkComponents}
@@ -428,5 +428,7 @@ export const Table = connect(
   mapStateToProps,
   mapDispatchToProps,
   null,
-  { forwardRef: true }
+  {
+    forwardRef: true
+  }
 )(TableComponent);
