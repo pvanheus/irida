@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MetadataEntry {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull
