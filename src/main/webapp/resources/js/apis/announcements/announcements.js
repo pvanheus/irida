@@ -20,3 +20,9 @@ export function deleteAnnouncement({ id }) {
     }
   });
 }
+
+export function getAnnouncementDetails({ id }) {
+  return axios
+    .get(`${BASE}/details?id=${id}`)
+    .then(({ data }) => console.log(data));
+}

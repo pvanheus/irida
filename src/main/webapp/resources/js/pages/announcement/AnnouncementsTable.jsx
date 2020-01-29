@@ -1,11 +1,10 @@
-import React, { useContext, forwardRef, useImperativeHandle } from "react";
+import React, { forwardRef, useContext, useImperativeHandle } from "react";
 import { PagedTableContext } from "../../contexts/PagedTableContext";
 import { setBaseUrl } from "../../utilities/url-utilities";
 import ReactMarkdown from "react-markdown";
 import { dateColumnFormat } from "../../components/ant.design/table-renderers";
 import { SPACE_SM, SPACE_XS } from "../../styles/spacing";
-import { Button, Input, Table } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Input, Table } from "antd";
 import { EditAnnouncement } from "./EditAnnouncement";
 import { DeleteAnnouncement } from "./DeleteAnnouncement";
 
@@ -111,6 +110,11 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
         loading={loading}
         onChange={handleTableChange}
         pagination={{ total, pageSize, hideOnSinglePage: true }}
+        expandable={{
+          expandedRowRender: record => (
+            <p style={{ margin: 0 }}>{record.message}</p>
+          ),
+        }}
       />
     </>
   );
