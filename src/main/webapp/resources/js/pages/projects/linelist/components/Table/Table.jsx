@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import isEqual from "lodash/isEqual";
 import isArray from "lodash/isArray";
 import PropTypes from "prop-types";
 import { showUndoNotification } from "../../../../../modules/notifications";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-balham.css";
-
+import "ag-grid-community/dist/styles/ag-theme-material.css";
 import { LoadingOverlay } from "./LoadingOverlay";
 import {
   DateCellRenderer,
@@ -18,8 +18,6 @@ import {
 import { FIELDS } from "../../constants";
 import { actions as templateActions } from "../../reducers/templates";
 import { actions as entryActions } from "../../reducers/entries";
-
-const { i18n } = window.PAGE;
 
 /**
  * React component to render the ag-grid to the page.
@@ -62,13 +60,6 @@ export class TableComponent extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     if (nextProps.globalFilter !== this.props.globalFilter) return true;
-    /**
-     * Check to see if the height of the table needs to be updated.
-     * This will only happen  on initial load or if the window height has changed
-     */
-    if (nextProps.height !== this.props.height) {
-      return true;
-    }
 
     if (!isEqual(nextProps.fields, this.props.fields)) {
       /*
@@ -316,15 +307,21 @@ export class TableComponent extends React.Component {
       /*
       Show a notification that allows the user to reverse the change to the value.
        */
-      const text = data[field]
-        ? i18n.linelist.editing.undo.full
-        : i18n.linelist.editing.undo.empty;
+      const text = Boolean(data[field])
+        ? i18n(
+            "linelist.editing.undo.full",
+            `${data[FIELDS.sampleName]}`,
+            `${headerName}`,
+            `${data[field]}`
+          )
+        : i18n(
+            "linelist.editing.undo.empty",
+            `${headerName}`,
+            `${data[FIELDS.sampleName]}`
+          );
       showUndoNotification(
         {
-          text: text
-            .replace("[SAMPLE_NAME]", data[FIELDS.sampleName])
-            .replace("[FIELD]", headerName)
-            .replace("[NEW_VALUE]", data[field])
+          text
         },
         () => {
           /**
@@ -370,41 +367,37 @@ export class TableComponent extends React.Component {
 
   render() {
     return (
-      <div
-        className="ag-grid-table-wrapper"
-        style={{ height: this.props.height }}
-      >
-        <AgGridReact
-          id="linelist-grid"
-          rowSelection="multiple"
-          onFilterChanged={this.setFilterCount}
-          localeText={i18n.linelist.agGrid}
-          columnDefs={this.props.fields}
-          rowData={this.props.entries}
-          frameworkComponents={this.frameworkComponents}
-          loadingOverlayComponent="LoadingOverlay"
-          onGridReady={this.onGridReady}
-          onDragStopped={this.onColumnDropped}
-          rowDeselection={true}
-          suppressRowClickSelection={true}
-          onSelectionChanged={this.onSelectionChange}
-          defaultColDef={{
-            headerCheckboxSelectionFilteredOnly: true,
-            sortable: true,
-            filter: true
-          }}
-          enableCellChangeFlash={true}
-          onCellEditingStarted={this.onCellEditingStarted}
-          onCellEditingStopped={this.onCellEditingStopped}
-          suppressKeyboardEvent={this.suppressEnterKeyOnDropDowns}
-        />
-      </div>
+      <AgGridReact
+        id="linelist-grid"
+        rowSelection="multiple"
+        onFilterChanged={this.setFilterCount}
+        localeText={{
+          loading: i18n("linelist.agGrid.loading"),
+          sampleName: i18n("linelist.agGrid.sampleName")
+        }}
+        columnDefs={this.props.fields}
+        rowData={this.props.entries}
+        frameworkComponents={this.frameworkComponents}
+        loadingOverlayComponent="LoadingOverlay"
+        onGridReady={this.onGridReady}
+        onDragStopped={this.onColumnDropped}
+        rowDeselection={true}
+        suppressRowClickSelection={true}
+        onSelectionChanged={this.onSelectionChange}
+        defaultColDef={{
+          headerCheckboxSelectionFilteredOnly: true,
+          sortable: true,
+          filter: true
+        }}
+        enableCellChangeFlash={true}
+        onCellEditingStarted={this.onCellEditingStarted}
+        onCellEditingStopped={this.onCellEditingStopped}
+      />
     );
   }
 }
 
 TableComponent.propTypes = {
-  height: PropTypes.number.isRequired,
   tableModified: PropTypes.func.isRequired,
   fields: PropTypes.array.isRequired,
   entries: PropTypes.array,
@@ -430,9 +423,6 @@ const mapDispatchToProps = dispatch => ({
   selection: selected => dispatch(entryActions.selection(selected))
 });
 
-export const Table = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  null,
-  { forwardRef: true }
-)(TableComponent);
+export const Table = connect(mapStateToProps, mapDispatchToProps, null, {
+  forwardRef: true
+})(TableComponent);

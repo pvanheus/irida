@@ -69,7 +69,7 @@ public class ProjectLineListPage extends ProjectPageBase {
 		return PageFactory.initElements(driver, ProjectLineListPage.class);
 	}
 
-	public void openColumnsPaenl() {
+	public void openColumnsPanel() {
 		columnsPanelToggle.click();
 	}
 
@@ -150,7 +150,8 @@ public class ProjectLineListPage extends ProjectPageBase {
 	}
 
 	public void goToNextTourStage() {
-		tourNextButton.click();
+		waitForTime(500);
+		driver.findElement(By.cssSelector("button[data-tour-elem=\"right-arrow\"]")).click();
 	}
 
 	public void closeTour() {

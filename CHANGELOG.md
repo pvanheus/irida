@@ -30,7 +30,21 @@ Changes
 * [Developer]: Added back minification config to production webpack config.
 * [UI/Developer]: Updated to latest (3.26.0) release of `ant.design`.
 * [Developer]: Fixed url for downloading multiple analysis outputs as well as for viewing the user analysis outputs page.
+* [Documentation]: Removed broken NCBI link and added info to conact NCBI about NCBI SRA exports.
 * [UI/Developer]: Lazy load line list export utilities.
+* [Developer]: Update to Chromedriver 79.0.0 for Travis CI.
+* [UI/Developer]: Standardized JavaScript internationalization through webpack. See [i18n documentation](https://irida.corefacility.ca/documentation/developer/interface/i18n/) for more information.
+* [UI/Developer]: Update version of `yarn`, `babel` dependencies.
+* [Developer]: Sample filter input has underscores escaped so that proper samples are returned.
+* [UI/Developer]: Updated to the latest release of ag-grid (v22.1.1).
+* [UI/Developer]: Updated how url's are created to allow for the addition of the context path.
+* [Documentation]: Updated links and references from the old IRIDA MiSeq Uploader to the new IRIDA Uploader as the old uploader will not be supported when python 2 reaches end of life.
+* [UI]: Add analyses queued and running counts to analyses listing pages, cart page, and pipeline launch page.
+* [UI/Developer]: Force angular to use only version 1.7.9 to avoid security vulnerability.
+* [UI/Developer]: Updated to V5 of styled-components.
+* [UI/Developer]: Update version of `babel` and `eslint`.
+* [Documentation]: Fixed documentation link for developer authorization/oauth docs.
+* [Documentation]: Added info about upgrading to Tomcat 8.
 
 19.05 to 19.09
 ---------------

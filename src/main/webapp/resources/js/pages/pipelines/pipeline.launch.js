@@ -2,6 +2,12 @@ import "jquery";
 import angular from "angular";
 import "ng-file-upload";
 
+import React from "react";
+import { render } from "react-dom";
+import { AnalysesQueue } from "../../components/AnalysesQueue";
+
+render(<AnalysesQueue />, document.querySelector("#queue-root"));
+
 /**
  * Main controller for the pipeline launch page.
  * @param $scope Application model object
@@ -129,9 +135,9 @@ function PipelineController(
    */
   vm.launchButtonTitle = function() {
     if (this.shouldDisableLaunch()) {
-      return window.PAGE.i18n.launchButtonTitleDisarmed;
+      return i18n("workflow.launch.btn.title-disarmed");
     } else {
-      return window.PAGE.i18n.launchButtonTitleArmed;
+      return i18n("workflow.launch.btn.title");
     }
   };
 
@@ -162,7 +168,7 @@ function PipelineController(
       shared = [];
 
     if (name === null || name.length === 0) {
-      vm.error = window.PAGE.i18n.required;
+      vm.error = window.__i18n("workflow.no-name-provided");
     } else {
       // Hide the launch buttons and display a message that it has been sent.
       vm.loading = true;
