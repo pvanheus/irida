@@ -1,14 +1,27 @@
 import React, { forwardRef, useContext, useImperativeHandle } from "react";
 import { PagedTableContext } from "../../contexts/PagedTableContext";
-import { setBaseUrl } from "../../utilities/url-utilities";
-import ReactMarkdown from "react-markdown";
+import RichTextEditor from "react-rte";
 import { dateColumnFormat } from "../../components/ant.design/table-renderers";
 import { SPACE_SM, SPACE_XS } from "../../styles/spacing";
-import { Input, Progress, Table } from "antd";
+import { Input, Progress, Table, Tooltip } from "antd";
 import { EditAnnouncement } from "./EditAnnouncement";
 import { DeleteAnnouncement } from "./DeleteAnnouncement";
 import { green6, red6, yellow6 } from "../../styles/colors";
 import { AnnouncementUsersButton } from "./AnnouncementUsersButton";
+import { ANT_DESIGN_FONT_FAMILY } from "../../styles/fonts";
+import styled from "styled-components";
+
+const StyledMarkdown = styled.div`
+  & > div {
+    border: none;
+    background: transparent;
+  }
+  .public-DraftEditor-content {
+    font-family: ${ANT_DESIGN_FONT_FAMILY};
+    font-size: 14px;
+    padding: 0;
+  }
+`;
 
 export const AnnouncementsTable = forwardRef((props, ref) => {
   const {
@@ -34,13 +47,12 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
       className: "t-announcement",
       render(text, full) {
         return (
-          <a href={setBaseUrl(`announcements/${full.id}/details`)}>
-            <ReactMarkdown
-              source={text}
-              disallowedTypes={["paragraph"]}
-              unwrapDisallowed
+          <StyledMarkdown>
+            <RichTextEditor
+              value={RichTextEditor.createValueFromString(text, "markdown")}
+              readOnly
             />
-          </a>
+          </StyledMarkdown>
         );
       }
     },
@@ -50,12 +62,17 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
         const percent = Math.round((full.usersRead / full.usersTotal) * 100);
         const colour = percent > 80 ? green6 : percent > 60 ? yellow6 : red6;
         return (
-          <Progress
-            percent={percent}
-            steps={10}
-            size="small"
-            strokeColor={colour}
-          />
+          <Tooltip
+            placement="topRight"
+            title={`${full.usersRead} / ${full.usersTotal}`}
+          >
+            <Progress
+              percent={percent}
+              steps={10}
+              size="small"
+              strokeColor={colour}
+            />
+          </Tooltip>
         );
       }
     },
