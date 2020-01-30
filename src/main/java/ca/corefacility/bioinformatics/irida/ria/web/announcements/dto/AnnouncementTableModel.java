@@ -8,18 +8,30 @@ import ca.corefacility.bioinformatics.irida.ria.web.models.tables.TableModel;
  * User interface model for DataTables for administration of {@link Announcement}
  */
 public class AnnouncementTableModel extends TableModel {
+	private String title;
 	private String message;
-	private User user;
+	private final User user;
+	private final long usersRead;
+	private final long usersTotal;
 
-	public AnnouncementTableModel(Announcement announcement) {
+	public AnnouncementTableModel(Announcement announcement, long usersTotal, long usersRead) {
 		super(announcement.getId(), announcement.getLabel(), announcement.getCreatedDate(), null);
-		// Only display the first line of the message.
-		this.message = announcement.getMessage().split("\\r?\\n")[0];
-		if(this.message.length() > 80){
+		// Only display the first line of the message as the title
+		// TODO: Let an announcement have an actual title.
+		this.title = announcement.getMessage()
+				.split("\\r?\\n")[0];
+		if (this.title.length() > 80) {
 			// If the message is still really long just take a substring of it.
-			this.message = this.message.substring(0, 79) + " ...";
+			this.title = this.message.substring(0, 79) + " ...";
 		}
+		this.message = announcement.getMessage();
 		this.user = announcement.getUser();
+		this.usersRead = usersRead;
+		this.usersTotal = usersTotal;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 	public String getMessage() {
@@ -28,5 +40,13 @@ public class AnnouncementTableModel extends TableModel {
 
 	public User getUser() {
 		return user;
+	}
+
+	public long getUsersRead() {
+		return usersRead;
+	}
+
+	public long getUsersTotal() {
+		return usersTotal;
 	}
 }

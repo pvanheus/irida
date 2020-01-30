@@ -1,12 +1,17 @@
 import React, { forwardRef, useContext, useImperativeHandle } from "react";
-import { PagedTableContext } from "../../contexts/PagedTableContext";
+import {
+  PagedTableContext,
+  PagedTableProvider
+} from "../../contexts/PagedTableContext";
 import { setBaseUrl } from "../../utilities/url-utilities";
 import ReactMarkdown from "react-markdown";
 import { dateColumnFormat } from "../../components/ant.design/table-renderers";
 import { SPACE_SM, SPACE_XS } from "../../styles/spacing";
-import { Input, Table } from "antd";
+import { Input, Progress, Table } from "antd";
 import { EditAnnouncement } from "./EditAnnouncement";
 import { DeleteAnnouncement } from "./DeleteAnnouncement";
+import { AnnouncementDetails } from "./AnnouncementDetails";
+import { green6, red6, yellow6 } from "../../styles/colors";
 
 export const AnnouncementsTable = forwardRef((props, ref) => {
   const {
@@ -28,7 +33,7 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
     },
     {
       title: i18n("AnnouncementTable.title"),
-      dataIndex: "name",
+      dataIndex: "title",
       className: "t-announcement",
       render(text, full) {
         return (
@@ -39,6 +44,21 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
               unwrapDisallowed
             />
           </a>
+        );
+      }
+    },
+    {
+      title: i18n("AnnouncementTable.read"),
+      render(text, full) {
+        const percent = Math.round((full.usersRead / full.usersTotal) * 100);
+        const colour = percent > 80 ? green6 : percent > 60 ? yellow6 : red6;
+        return (
+          <Progress
+            percent={percent}
+            steps={10}
+            size="small"
+            strokeColor={colour}
+          />
         );
       }
     },
@@ -111,9 +131,15 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
         onChange={handleTableChange}
         pagination={{ total, pageSize, hideOnSinglePage: true }}
         expandable={{
-          expandedRowRender: record => (
-            <p style={{ margin: 0 }}>{record.message}</p>
-          ),
+          expandedRowRender: announcement => (
+            <PagedTableProvider
+              url={setBaseUrl(
+                `ajax/announcement/details?id=${announcement.id}`
+              )}
+            >
+              <AnnouncementDetails />
+            </PagedTableProvider>
+          )
         }}
       />
     </>

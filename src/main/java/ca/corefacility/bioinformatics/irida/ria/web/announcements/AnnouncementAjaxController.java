@@ -1,7 +1,9 @@
 package ca.corefacility.bioinformatics.irida.ria.web.announcements;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import ca.corefacility.bioinformatics.irida.model.announcements.Announcement;
+import ca.corefacility.bioinformatics.irida.model.announcements.AnnouncementUserJoin;
 import ca.corefacility.bioinformatics.irida.model.user.User;
 import ca.corefacility.bioinformatics.irida.repositories.specification.AnnouncementSpecification;
+import ca.corefacility.bioinformatics.irida.repositories.specification.UserSpecification;
 import ca.corefacility.bioinformatics.irida.ria.web.announcements.dto.AnnouncementRequest;
 import ca.corefacility.bioinformatics.irida.ria.web.announcements.dto.AnnouncementTableModel;
+import ca.corefacility.bioinformatics.irida.ria.web.announcements.dto.AnnouncementUser;
 import ca.corefacility.bioinformatics.irida.ria.web.models.tables.TableRequest;
 import ca.corefacility.bioinformatics.irida.ria.web.models.tables.TableResponse;
 import ca.corefacility.bioinformatics.irida.service.AnnouncementService;
@@ -48,10 +53,12 @@ public class AnnouncementAjaxController {
 		final Page<Announcement> page = announcementService.search(
 				AnnouncementSpecification.searchAnnouncement(tableRequest.getSearch()),
 				PageRequest.of(tableRequest.getCurrent(), tableRequest.getPageSize(), tableRequest.getSort()));
+		long usersTotal = userService.count();
 
 		final List<AnnouncementTableModel> announcements = page.getContent()
 				.stream()
-				.map(AnnouncementTableModel::new)
+				.map(a -> new AnnouncementTableModel(a, usersTotal,
+						announcementService.countReadsForOneAnnouncement(a)))
 				.collect(Collectors.toList());
 		return new TableResponse(announcements, page.getTotalElements());
 	}
@@ -92,6 +99,27 @@ public class AnnouncementAjaxController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void deleteAnnouncement(@RequestBody AnnouncementRequest announcementRequest) {
 		announcementService.delete(announcementRequest.getId());
+	}
+
+	@RequestMapping("/details")
+	public TableResponse getAnnouncementDetails(@RequestParam Long id, TableRequest tableRequest) {
+		Announcement announcement = announcementService.read(id);
+		List<AnnouncementUserJoin> readUsers = announcementService.getReadUsersForAnnouncement(announcement);
+
+		Page<User> usersPage = userService.search(UserSpecification.searchUser(tableRequest.getSearch()),
+				PageRequest.of(tableRequest.getCurrent(), tableRequest.getPageSize(), tableRequest.getSort()));
+		List<AnnouncementUser> users = usersPage.getContent()
+				.stream()
+				.map(user -> {
+					Optional<AnnouncementUserJoin> currentAnnouncement = readUsers.stream()
+							.filter(j -> j.getObject()
+									.equals(user))
+							.findAny();
+					Date readDate = currentAnnouncement.map(AnnouncementUserJoin::getCreatedDate)
+							.orElse(null);
+					return new AnnouncementUser(user, readDate);
+				}).collect(Collectors.toList());
+		return new TableResponse(users, usersPage.getTotalElements());
 	}
 }
 
