@@ -101,14 +101,6 @@ export function ClientsTable() {
   ];
 
   /**
-   * Handle searching through the external filter.
-   * @param event
-   */
-  function tableSearch(event) {
-    onSearch(event.target.value);
-  }
-
-  /**
    * Revoke the tokens for the current client described
    * in the current row.
    */
@@ -133,7 +125,7 @@ export function ClientsTable() {
           marginBottom: SPACE_XS
         }}
       >
-        <Input.Search style={{ width: 250 }} onChange={tableSearch} />
+        <Input.Search style={{ width: 250 }} onChange={onSearch} />
       </div>
       <Table
         columns={columns}

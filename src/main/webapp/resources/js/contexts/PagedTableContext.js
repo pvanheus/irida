@@ -60,10 +60,10 @@ function PagedTableProvider({ children, url }) {
    * Required when using an external filter on a table.
    * @param term - search term
    */
-  const onSearch = debounce(term => {
+  const onSearch = debounce(event => {
     setTableState({
       ...tableState,
-      search: term
+      search: typeof event === "string" ? event : event?.target.value
     });
   }, 300);
 

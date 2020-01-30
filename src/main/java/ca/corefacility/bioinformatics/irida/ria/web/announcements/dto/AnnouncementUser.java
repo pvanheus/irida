@@ -6,7 +6,7 @@ import ca.corefacility.bioinformatics.irida.model.user.User;
 import ca.corefacility.bioinformatics.irida.ria.web.models.tables.TableModel;
 
 public class AnnouncementUser extends TableModel {
-	private Date dateRead;
+	private final Date dateRead;
 
 	public AnnouncementUser(User user, Date dateRead) {
 		super(user.getId(), user.getUsername(), null, null);

@@ -1,6 +1,6 @@
 import React from "react";
 import { DeleteOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Tooltip } from "antd";
 import { red6 } from "../../styles/colors";
 
 /**
@@ -12,16 +12,18 @@ import { red6 } from "../../styles/colors";
  */
 export function DeleteAnnouncement({ id, deleteAnnouncement }) {
   return (
-    <Popconfirm
-      placement={"topRight"}
-      title={i18n("DeleteAnnouncement.title")}
-      onConfirm={() => deleteAnnouncement({ id })}
-      okText={i18n("DeleteAnnouncement.ok")}
-      icon={<QuestionCircleOutlined style={{ color: red6 }} />}
-    >
-      <Button shape={"circle"}>
-        <DeleteOutlined />
-      </Button>
-    </Popconfirm>
+    <Tooltip placement="topRight" title={i18n("DeleteAnnouncement.tooltip")}>
+      <Popconfirm
+        placement={"topRight"}
+        title={i18n("DeleteAnnouncement.title")}
+        onConfirm={() => deleteAnnouncement({ id })}
+        okText={i18n("DeleteAnnouncement.ok")}
+        icon={<QuestionCircleOutlined style={{ color: red6 }} />}
+      >
+        <Button shape={"circle"}>
+          <DeleteOutlined />
+        </Button>
+      </Popconfirm>
+    </Tooltip>
   );
 }

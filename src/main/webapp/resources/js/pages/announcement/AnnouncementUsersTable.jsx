@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { PagedTableContext } from "../../contexts/PagedTableContext";
-import { Table } from "antd";
+import { Button, Input, Table } from "antd";
 import { formatInternationalizedDateTime } from "../../utilities/date-utilities";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { green6, red6 } from "../../styles/colors";
+import { setBaseUrl } from "../../utilities/url-utilities";
 
-export function AnnouncementDetails() {
+export function AnnouncementUsersTable() {
   const {
     loading,
     total,
@@ -28,11 +29,18 @@ export function AnnouncementDetails() {
       }
     },
     {
-      title: "user",
-      dataIndex: "name"
+      title: i18n("AnnouncementUsersTable.username"),
+      dataIndex: "name",
+      render(text, full) {
+        return (
+          <Button type="link" href={setBaseUrl(`/users/${full.id}`)}>
+            {text}
+          </Button>
+        );
+      }
     },
     {
-      title: "readDate",
+      title: i18n("AnnouncementUsersTable.dateRead"),
       dataIndex: "dateRead",
       align: "right",
       render(text) {
@@ -42,13 +50,18 @@ export function AnnouncementDetails() {
   ];
 
   return (
-    <Table
-      size="small"
-      dataSource={dataSource}
-      columns={columns}
-      loading={loading}
-      onChange={handleTableChange}
-      pagination={{ total, pageSize, hideOnSinglePage: true }}
-    />
+    <>
+      <div>
+        <Input.Search onChange={onSearch} placeholder={i18n("AnnouncementUsersTable.search")} />
+      </div>
+      <Table
+        size="small"
+        dataSource={dataSource}
+        columns={columns}
+        loading={loading}
+        onChange={handleTableChange}
+        pagination={{ total, pageSize, hideOnSinglePage: true }}
+      />
+    </>
   );
 }

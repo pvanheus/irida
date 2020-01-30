@@ -99,14 +99,6 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
     }
   ];
 
-  /**
-   * Handle searching through the external filter.
-   * @param event
-   */
-  function tableSearch(event) {
-    onSearch(event.target.value);
-  }
-
   useImperativeHandle(ref, () => ({
     updateTable() {
       updateTable();
@@ -122,7 +114,7 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
           marginBottom: SPACE_SM
         }}
       >
-        <Input.Search style={{ width: 250 }} onChange={tableSearch} />
+        <Input.Search style={{ width: 250 }} onChange={onSearch} />
       </div>
       <Table
         dataSource={dataSource}
