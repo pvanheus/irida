@@ -68,8 +68,6 @@ module.exports = {
   "clients-list": "./resources/js/pages/clients/listing/ClientListingPage.jsx",
   "users-list": "./resources/js/pages/users/users-list.js",
   "users-password": "./resources/js/pages/users/users-password.js",
-  "announcement-users":
-    "./resources/js/pages/announcement/announcement-users.js",
   "announcement-admin":
     "./resources/js/pages/announcement/AnnouncementAdminPage.jsx",
   "sample-edit": "./resources/js/pages/samples/sample-edit.js",
