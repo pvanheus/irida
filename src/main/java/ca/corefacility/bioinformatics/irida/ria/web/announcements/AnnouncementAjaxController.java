@@ -20,6 +20,7 @@ import ca.corefacility.bioinformatics.irida.repositories.specification.UserSpeci
 import ca.corefacility.bioinformatics.irida.ria.web.announcements.dto.AnnouncementRequest;
 import ca.corefacility.bioinformatics.irida.ria.web.announcements.dto.AnnouncementTableModel;
 import ca.corefacility.bioinformatics.irida.ria.web.announcements.dto.AnnouncementUser;
+import ca.corefacility.bioinformatics.irida.ria.web.announcements.dto.AnnouncementUserTableRequest;
 import ca.corefacility.bioinformatics.irida.ria.web.models.tables.TableRequest;
 import ca.corefacility.bioinformatics.irida.ria.web.models.tables.TableResponse;
 import ca.corefacility.bioinformatics.irida.service.AnnouncementService;
@@ -102,7 +103,7 @@ public class AnnouncementAjaxController {
 	}
 
 	@RequestMapping("/details")
-	public TableResponse getAnnouncementDetails(@RequestParam Long id, TableRequest tableRequest) {
+	public TableResponse getAnnouncementDetails(@RequestParam Long id, @RequestBody AnnouncementUserTableRequest tableRequest) {
 		Announcement announcement = announcementService.read(id);
 		List<AnnouncementUserJoin> readUsers = announcementService.getReadUsersForAnnouncement(announcement);
 

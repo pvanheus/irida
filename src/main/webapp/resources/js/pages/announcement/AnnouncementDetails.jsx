@@ -1,9 +1,11 @@
-import React, { useContext, useEffect } from "react";
-import { getAnnouncementDetails } from "../../apis/announcements/announcements";
+import React, { useContext } from "react";
 import { PagedTableContext } from "../../contexts/PagedTableContext";
 import { Table } from "antd";
+import { formatInternationalizedDateTime } from "../../utilities/date-utilities";
+import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
+import { green6, red6 } from "../../styles/colors";
 
-export function AnnouncementDetails({ id }) {
+export function AnnouncementDetails() {
   const {
     loading,
     total,
@@ -14,15 +16,40 @@ export function AnnouncementDetails({ id }) {
     updateTable
   } = useContext(PagedTableContext);
 
-  useEffect(() => {
-    getAnnouncementDetails({id}).then(data => console.log(data));
-  }, []);
+  const columns = [
+    {
+      width: 30,
+      render(text, full) {
+        return full.dateRead !== null ? (
+          <CheckCircleFilled style={{ color: green6 }} />
+        ) : (
+          <CloseCircleFilled style={{ color: red6 }} />
+        );
+      }
+    },
+    {
+      title: "user",
+      dataIndex: "name"
+    },
+    {
+      title: "readDate",
+      dataIndex: "dateRead",
+      align: "right",
+      render(text) {
+        return formatInternationalizedDateTime(text);
+      }
+    }
+  ];
 
-  const columns = [{
-  }]
-
-  return <Table
-    dataSource={dataSource}
-    columns={columns}
-  />;
+  return (
+    <Table
+      style={{ width: 400 }}
+      size="small"
+      dataSource={dataSource}
+      columns={columns}
+      loading={loading}
+      onChange={handleTableChange}
+      pagination={{ total, pageSize, hideOnSinglePage: true }}
+    />
+  );
 }

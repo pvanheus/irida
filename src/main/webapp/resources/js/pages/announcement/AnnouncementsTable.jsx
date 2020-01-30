@@ -134,7 +134,7 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
           expandedRowRender: announcement => (
             <PagedTableProvider
               url={setBaseUrl(
-                `ajax/announcement/details?id=${announcement.id}`
+                `ajax/announcements/details?id=${announcement.id}`
               )}
             >
               <AnnouncementDetails />
