@@ -15,7 +15,7 @@ public class AnnouncementTableModel extends TableModel {
 	private final long usersTotal;
 
 	public AnnouncementTableModel(Announcement announcement, long usersTotal, long usersRead) {
-		super(announcement.getId(), announcement.getLabel(), announcement.getCreatedDate(), null);
+		super(announcement.getId(), null, announcement.getCreatedDate(), null);
 		// Only display the first line of the message as the title
 		// TODO: Let an announcement have an actual title.
 		this.title = announcement.getMessage()

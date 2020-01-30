@@ -1,8 +1,5 @@
 import React, { forwardRef, useContext, useImperativeHandle } from "react";
-import {
-  PagedTableContext,
-  PagedTableProvider
-} from "../../contexts/PagedTableContext";
+import { PagedTableContext } from "../../contexts/PagedTableContext";
 import { setBaseUrl } from "../../utilities/url-utilities";
 import ReactMarkdown from "react-markdown";
 import { dateColumnFormat } from "../../components/ant.design/table-renderers";
@@ -10,8 +7,8 @@ import { SPACE_SM, SPACE_XS } from "../../styles/spacing";
 import { Input, Progress, Table } from "antd";
 import { EditAnnouncement } from "./EditAnnouncement";
 import { DeleteAnnouncement } from "./DeleteAnnouncement";
-import { AnnouncementDetails } from "./AnnouncementDetails";
 import { green6, red6, yellow6 } from "../../styles/colors";
+import { AnnouncementUsersButton } from "./AnnouncementUsersButton";
 
 export const AnnouncementsTable = forwardRef((props, ref) => {
   const {
@@ -79,10 +76,13 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
       key: "actions",
       align: "right",
       fixed: "right",
-      width: 120,
+      width: 150,
       render(text, record) {
         return (
           <span>
+            <span style={{ marginRight: SPACE_XS }}>
+              <AnnouncementUsersButton announcement={record} />
+            </span>
             <span style={{ marginRight: SPACE_XS }}>
               <EditAnnouncement
                 announcement={record}
@@ -130,17 +130,6 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
         loading={loading}
         onChange={handleTableChange}
         pagination={{ total, pageSize, hideOnSinglePage: true }}
-        expandable={{
-          expandedRowRender: announcement => (
-            <PagedTableProvider
-              url={setBaseUrl(
-                `ajax/announcements/details?id=${announcement.id}`
-              )}
-            >
-              <AnnouncementDetails />
-            </PagedTableProvider>
-          )
-        }}
       />
     </>
   );

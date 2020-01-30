@@ -36,14 +36,13 @@ export function AnnouncementDetails() {
       dataIndex: "dateRead",
       align: "right",
       render(text) {
-        return formatInternationalizedDateTime(text);
+        return text ? formatInternationalizedDateTime(text) : "";
       }
     }
   ];
 
   return (
     <Table
-      style={{ width: 400 }}
       size="small"
       dataSource={dataSource}
       columns={columns}
