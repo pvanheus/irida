@@ -101,7 +101,10 @@ public class ClientsController extends BaseController {
 	 * @return The name of the page.
 	 */
 	@RequestMapping
-	public String getClientsPage() {
+	public String getClientsPage(Model model) {
+		model.addAttribute("grantTypes", AVAILABLE_GRANTS);
+		model.addAttribute("tokenValidity", AVAILABLE_TOKEN_VALIDITY);
+		model.addAttribute("refreshTokenLengths", AVAILABLE_REFRESH_TOKEN_VALIDITY);
 		return CLIENTS_PAGE;
 	}
 

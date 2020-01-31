@@ -45,7 +45,7 @@ public class ClientsControllerTest {
 
 	@Test
 	public void testGetClientsPage() {
-		String clientsPage = controller.getClientsPage();
+		String clientsPage = controller.getClientsPage(new ExtendedModelMap());
 		assertEquals(ClientsController.CLIENTS_PAGE, clientsPage);
 	}
 

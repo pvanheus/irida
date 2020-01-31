@@ -77,3 +77,12 @@ export function formatDate({ date, format = "lll" }) {
 export function isDate(date) {
   return moment.isDate(new Date(date));
 }
+
+// get a readable string of the time from a given number of seconds
+export function getIntervalFromSeconds(seconds) {
+  if (!isNaN(seconds)) {
+    const now = moment();
+    now.add(parseInt(seconds), "s");
+    return now.fromNow(true);
+  }
+}
