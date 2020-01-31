@@ -20,16 +20,13 @@ function CartSamplesComponent({ count, collapsed, loaded }) {
       style={{ backgroundColor: grey2 }}
     >
       {count === 0 ? (
-        <CartNotification
-          icon="shopping-cart"
-          text={i18n("CartEmpty.heading")}
-        />
+        <CartNotification type={"shopping"} text={i18n("CartEmpty.heading")}/>
       ) : loaded ? (
         <CartSamples />
       ) : (
         <CartNotification
           text={i18n("cart.noneMatchingFilter")}
-          icon="warning"
+          type={"warning"}
         />
       )}
     </Sider>
