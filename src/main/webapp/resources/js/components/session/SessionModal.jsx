@@ -116,10 +116,7 @@ export default function SessionModal({
           padding: `0 ${SPACE_SM}`
         }}
       >
-        <ClockCircleTwoTone
-          style={{ fontSize: 55 }}
-          twoToneColor={red6}
-        />
+        <ClockCircleTwoTone style={{ fontSize: 55 }} twoToneColor={red6} />
         <span style={{ paddingLeft: SPACE_SM }}>
           {i18n("session_timeout_modal_desc")}
         </span>

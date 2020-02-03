@@ -8,7 +8,6 @@ import ca.corefacility.bioinformatics.irida.ria.web.models.tables.TableModel;
  * User interface model for DataTables for administration of {@link Announcement}
  */
 public class AnnouncementTableModel extends TableModel {
-	private String title;
 	private String message;
 	private final User user;
 	private final long usersRead;
@@ -18,20 +17,17 @@ public class AnnouncementTableModel extends TableModel {
 		super(announcement.getId(), null, announcement.getCreatedDate(), null);
 		// Only display the first line of the message as the title
 		// TODO: Let an announcement have an actual title.
-		this.title = announcement.getMessage()
+		String name = announcement.getMessage()
 				.split("\\r?\\n")[0];
-		if (this.title.length() > 80) {
+		if (name.length() > 80) {
 			// If the message is still really long just take a substring of it.
-			this.title = this.message.substring(0, 79) + " ...";
+			name = this.message.substring(0, 79) + " ...";
 		}
+		setName(name);
 		this.message = announcement.getMessage();
 		this.user = announcement.getUser();
 		this.usersRead = usersRead;
 		this.usersTotal = usersTotal;
-	}
-
-	public String getTitle() {
-		return title;
 	}
 
 	public String getMessage() {

@@ -32,6 +32,10 @@ public abstract class TableModel {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}

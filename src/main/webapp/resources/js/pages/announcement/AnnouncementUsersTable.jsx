@@ -52,7 +52,10 @@ export function AnnouncementUsersTable() {
   return (
     <>
       <div>
-        <Input.Search onChange={onSearch} placeholder={i18n("AnnouncementUsersTable.search")} />
+        <Input.Search
+          onChange={onSearch}
+          placeholder={i18n("AnnouncementUsersTable.search")}
+        />
       </div>
       <Table
         size="small"

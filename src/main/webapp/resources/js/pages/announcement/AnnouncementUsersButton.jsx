@@ -14,7 +14,10 @@ export function AnnouncementUsersButton({ announcement }) {
 
   return (
     <>
-      <Tooltip placement="topRight" title={i18n("AnnouncementUsersButton.tooltip")}>
+      <Tooltip
+        placement="topRight"
+        title={i18n("AnnouncementUsersButton.tooltip")}
+      >
         <Button shape="circle" onClick={() => setVisibility(true)}>
           <UserOutlined />
         </Button>
