@@ -1,38 +1,15 @@
 import React, { forwardRef, useContext, useImperativeHandle } from "react";
 import { PagedTableContext } from "../../contexts/PagedTableContext";
-import RichTextEditor from "react-rte";
+import { setBaseUrl } from "../../utilities/url-utilities";
+import ReactMarkdown from "react-markdown";
 import { dateColumnFormat } from "../../components/ant.design/table-renderers";
-import { SPACE_SM, SPACE_XS } from "../../styles/spacing";
-import { Input, Progress, Table, Tooltip } from "antd";
+import { SPACE_XS } from "../../styles/spacing";
 import { EditAnnouncement } from "./EditAnnouncement";
 import { DeleteAnnouncement } from "./DeleteAnnouncement";
-import { green6, red6, yellow6 } from "../../styles/colors";
-import { AnnouncementUsersButton } from "./AnnouncementUsersButton";
-import { ANT_DESIGN_FONT_FAMILY } from "../../styles/fonts";
-import styled from "styled-components";
-
-const StyledMarkdown = styled.div`
-  & > div {
-    border: none;
-    background: transparent;
-  }
-  .public-DraftEditor-content {
-    font-family: ${ANT_DESIGN_FONT_FAMILY};
-    font-size: 14px;
-    padding: 0;
-  }
-`;
+import { PagedTable } from "../../components/ant.design/PagedTable";
 
 export const AnnouncementsTable = forwardRef((props, ref) => {
-  const {
-    loading,
-    total,
-    pageSize,
-    dataSource,
-    onSearch,
-    handleTableChange,
-    updateTable
-  } = useContext(PagedTableContext);
+  const { updateTable } = useContext(PagedTableContext);
 
   const columns = [
     {
@@ -43,36 +20,17 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
     },
     {
       title: i18n("AnnouncementTable.title"),
-      dataIndex: "title",
+      dataIndex: "name",
       className: "t-announcement",
       render(text, full) {
         return (
-          <StyledMarkdown>
-            <RichTextEditor
-              value={RichTextEditor.createValueFromString(text, "markdown")}
-              readOnly
+          <a href={setBaseUrl(`announcements/${full.id}/details`)}>
+            <ReactMarkdown
+              source={text}
+              disallowedTypes={["paragraph"]}
+              unwrapDisallowed
             />
-          </StyledMarkdown>
-        );
-      }
-    },
-    {
-      title: i18n("AnnouncementTable.read"),
-      render(text, full) {
-        const percent = Math.round((full.usersRead / full.usersTotal) * 100);
-        const colour = percent > 80 ? green6 : percent > 60 ? yellow6 : red6;
-        return (
-          <Tooltip
-            placement="topRight"
-            title={`${full.usersRead} / ${full.usersTotal}`}
-          >
-            <Progress
-              percent={percent}
-              steps={10}
-              size="small"
-              strokeColor={colour}
-            />
-          </Tooltip>
+          </a>
         );
       }
     },
@@ -93,13 +51,10 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
       key: "actions",
       align: "right",
       fixed: "right",
-      width: 150,
+      width: 110,
       render(text, record) {
         return (
           <span>
-            <span style={{ marginRight: SPACE_XS }}>
-              <AnnouncementUsersButton announcement={record} />
-            </span>
             <span style={{ marginRight: SPACE_XS }}>
               <EditAnnouncement
                 announcement={record}
@@ -122,24 +77,5 @@ export const AnnouncementsTable = forwardRef((props, ref) => {
     }
   }));
 
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row-reverse",
-          marginBottom: SPACE_SM
-        }}
-      >
-        <Input.Search style={{ width: 250 }} onChange={onSearch} />
-      </div>
-      <Table
-        dataSource={dataSource}
-        columns={columns}
-        loading={loading}
-        onChange={handleTableChange}
-        pagination={{ total, pageSize, hideOnSinglePage: true }}
-      />
-    </>
-  );
+  return <PagedTable columns={columns} />;
 });
