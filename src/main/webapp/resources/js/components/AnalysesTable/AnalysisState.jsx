@@ -21,10 +21,10 @@ export function AnalysisState({ state }) {
       return <Badge status="success" text={state.text} />;
     default:
       return (
-        <span>
+        <div>
           <SyncOutlined style={{ marginRight: SPACE_XS, color: green6 }} spin />
           {state.text}
-        </span>
+        </div>
       );
   }
 }
