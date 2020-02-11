@@ -22,7 +22,10 @@ export function AnalysisState({ state }) {
     default:
       return (
         <span>
-          <SyncOutlined style={{marginRight: SPACE_XS, color: green6}} spin/>
+          <SyncOutlined
+            style={{ marginRight: SPACE_XS, color: green6 }}
+            spin
+          />
           {state.text}
         </span>
       );
