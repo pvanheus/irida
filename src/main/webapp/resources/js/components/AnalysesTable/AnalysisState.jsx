@@ -27,7 +27,7 @@ export function AnalysisState({ state }) {
             spin
           />
           {state.text}
-        </div>
+        </span>
       );
   }
 }
